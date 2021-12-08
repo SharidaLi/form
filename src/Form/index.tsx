@@ -1,4 +1,4 @@
-import { attachPropertiesToComponent } from '../utils';
+import { attachPropertiesToComponent } from '../utils/utils';
 import { Form } from './form';
 import { FormItem } from './form-item';
 

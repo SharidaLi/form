@@ -5,5 +5,16 @@ type FormProps = {
 };
 
 export const Form: React.FC<FormProps> = (props) => {
-  return <form>{props.children}</form>;
+  const { onFinish } = props;
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onFinish?.();
+      }}
+    >
+      {props.children}
+    </form>
+  );
 };

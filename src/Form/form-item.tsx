@@ -6,5 +6,11 @@ type FormItemProps = {
 };
 
 export const FormItem: React.FC<FormItemProps> = (props) => {
-  return <>{props.children}</>;
+  const { label } = props;
+  return (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div>{label}</div>
+      <div style={{ marginLeft: 8 }}>{props.children}</div>
+    </div>
+  );
 };
