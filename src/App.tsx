@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import Form from './Form';
 
 function App() {
+  const [form] = Form.useForm();
+  console.log(form);
+
   const onFinish = () => {
     console.log('123');
   };
+
   return (
     <div className="App">
-      <Form onFinish={onFinish}>
+      <Form onFinish={onFinish} initialValues={{ username: 'zhangsan' }}>
         <Form.Item label="姓名" name="username">
           <input type="text" placeholder="请输入" />
         </Form.Item>
