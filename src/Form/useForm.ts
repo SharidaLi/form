@@ -1,49 +1,59 @@
 import React from 'react';
-import { Store } from "./interface";
+import { Callbacks, FormInstance, Store } from "./interface";
 
 export class FormStore {
   private store: Store = {};
   private forceRootUpdate: () => void;
+  private callbacks: Callbacks = {};
+
 
   constructor(forceRootUpdate: () => void) {
     this.forceRootUpdate = forceRootUpdate;
   }
+
   public getForm = () => ({
     getFieldValue: this.getFieldValue,
+    setFieldValue: this.setFieldValue,
     setFieldsValue: this.setFieldsValue,
     getFieldsValue: this.getFieldsValue,
-    // getFieldError: this.getFieldError,
-    // getFieldWarning: this.getFieldWarning,
-    // getFieldsError: this.getFieldsError,
-    // isFieldsTouched: this.isFieldsTouched,
-    // isFieldTouched: this.isFieldTouched,
-    // isFieldValidating: this.isFieldValidating,
-    // isFieldsValidating: this.isFieldsValidating,
-    // resetFields: this.resetFields,
-    // setFields: this.setFields,
-    // setFieldsValue: this.setFieldsValue,
-    // validateFields: this.validateFields,
+    setCallbacks: this.setCallbacks,
+    setInitialValues: this.setInitialValues,
     submit: this.submit,
-
-    // getInternalHooks: this.getInternalHooks,
   });
+  private setCallbacks = (callbacks: Callbacks) => {
+    this.callbacks = callbacks;
+  };
   getFieldsValue = () => {
     return this.store;
   }
   setFieldsValue = (newStore: Store) => {
     this.store = { ...this.store, ...newStore };
+    this.forceRootUpdate();
+  }
+  setFieldValue = (name: string, value: any) => {
+    this.store[name] = value;
+    this.forceRootUpdate();
   }
   getFieldValue = (key: string) => {
     return this.store[key]
   }
-  submit = () => {
-    return this.store;
+  setInitialValues = (newStore: Store, init: boolean) => {
+    if (init) {
+      this.setFieldsValue(newStore)
+    }
   }
-
+  submit = () => {
+    const { onFinish } = this.callbacks
+    if (onFinish) {
+      onFinish(this.store)
+    }
+  }
 }
 
 function useForm() {
-  const formRef = React.useRef<any>();
+  const formRef = React.useRef<FormInstance>();
+
+  // 刷新组件
   const [, forceUpdate] = React.useState({});
 
   if (!formRef.current) {
