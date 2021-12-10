@@ -6,7 +6,10 @@ function App() {
 
   const onFinish = (value: object) => {
     console.log(value);
-    console.log('123');
+  };
+
+  const onFinishFailed = (value: any) => {
+    console.log(value);
   };
 
   return (
@@ -14,7 +17,8 @@ function App() {
       <Form
         form={form}
         onFinish={onFinish}
-        initialValues={{ username: 'zhangsan' }}
+        onFinishFailed={onFinishFailed}
+        // initialValues={{ username: 'zhangsan' }}
       >
         <Form.Item label="姓名" name="username">
           <input type="text" placeholder="请输入" />

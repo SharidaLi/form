@@ -11,11 +11,19 @@ export type FormInstance = {
   submit: () => void;
 };
 
+export type ErrorField = { name: string; errors: string[] }[];
+
+export interface ValidateErrorEntity<Values = any> {
+  values: Values;
+  errorFields: ErrorField[];
+  outOfDate: boolean;
+}
+
 export interface Callbacks<Values = any> {
   // onValuesChange?: (changedValues: any, values: Values) => void;
   // onFieldsChange?: (changedFields: FieldData[], allFields: FieldData[]) => void;
   onFinish?: (values: Values) => void;
-  // onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
+  onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
 }
 
 export interface ChildProps {

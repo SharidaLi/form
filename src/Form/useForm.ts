@@ -20,6 +20,7 @@ export class FormStore {
     setInitialValues: this.setInitialValues,
     submit: this.submit,
   });
+
   private setCallbacks = (callbacks: Callbacks) => {
     this.callbacks = callbacks;
   };
@@ -35,18 +36,35 @@ export class FormStore {
     this.forceRootUpdate();
   }
   getFieldValue = (key: string) => {
-    return this.store[key]
+    return this.store[key];
   }
   setInitialValues = (newStore: Store, init: boolean) => {
     if (init) {
       this.setFieldsValue(newStore)
     }
   }
+  validateFields = () => {
+    return new Promise<void>((resolve, reject) => {
+      
+    })
+  }
+
   submit = () => {
-    const { onFinish } = this.callbacks
-    if (onFinish) {
-      onFinish(this.store)
-    }
+    this.validateFields().then(
+      () => {
+        const { onFinish } = this.callbacks
+        if (onFinish) {
+          onFinish(this.store)
+        }
+      }
+    ).catch(
+      errors => {
+        const { onFinishFailed } = this.callbacks
+        if (onFinishFailed) {
+          onFinishFailed(errors)
+        }
+      }
+    )
   }
 }
 
@@ -55,12 +73,7 @@ function useForm() {
 
   // 刷新组件
   const [, forceUpdate] = React.useState({});
-
   if (!formRef.current) {
-    // if (form) {
-    //   formRef.current = form;
-    // } else {
-    // Create a new FormStore if not provided
     const forceReRender = () => {
       forceUpdate({});
     };
@@ -68,7 +81,6 @@ function useForm() {
     const formStore: FormStore = new FormStore(forceReRender);
 
     formRef.current = formStore.getForm();
-    // }
   }
 
   return [formRef.current];

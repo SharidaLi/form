@@ -9,9 +9,8 @@ type FormItemProps = {
 
 export const FormItem: React.FC<FormItemProps> = (props) => {
   const { label, name, children } = props;
-  
-  const { getFieldValue, setFieldValue } =
-    useContext<FormInstance>(FieldContext);
+
+  const { getFieldValue, setFieldValue } = useContext<FormInstance>(FieldContext);
 
   const getControlled = (childProps: ChildProps) => {
     const { onChange } = childProps;
@@ -32,10 +31,7 @@ export const FormItem: React.FC<FormItemProps> = (props) => {
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <div>{label}</div>
       <div style={{ marginLeft: 8 }}>
-        {React.cloneElement(
-          children as ReactElement,
-          getControlled((children as ReactElement).props)
-        )}
+        {React.cloneElement(children as ReactElement, getControlled((children as ReactElement).props))}
       </div>
     </div>
   );
