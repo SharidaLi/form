@@ -29,11 +29,9 @@ export class FormStore {
   }
   setFieldsValue = (newStore: Store) => {
     this.store = { ...this.store, ...newStore };
-    this.forceRootUpdate();
   }
   setFieldValue = (name: string, value: any) => {
     this.store[name] = value;
-    this.forceRootUpdate();
   }
   getFieldValue = (key: string) => {
     return this.store[key];
@@ -45,7 +43,7 @@ export class FormStore {
   }
   validateFields = () => {
     return new Promise<void>((resolve, reject) => {
-      
+      resolve()
     })
   }
 
